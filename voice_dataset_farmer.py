@@ -44,6 +44,7 @@ class VocalDatasetFarmer:
 
         soup = bs(driver.page_source, 'html.parser')
         res = soup.find_all('ytd-playlist-panel-video-renderer')
+        driver.close()
         self.links = [x.contents[1]['href'] for x in res]
         self.status = '__playlist_to_item complete'
 
@@ -95,8 +96,8 @@ class VocalDatasetFarmer:
             for segment in all_segments:
                 extract = sound[segment[1] - 400:segment[1] + segment[2]]
                 # Saving file in required location
-                extract.export("dataset/" + filename[:-4] + '_' + str(index) + '.wav', format="wav")
-                f = open("dataset/" + filename[:-4] + '_' + str(index) + '.txt', 'w', encoding='utf-8')
+                extract.export(self.__output_path + filename[:-4] + '_' + str(index) + '.wav', format="wav")
+                f = open(self.__output_path + filename[:-4] + '_' + str(index) + '.txt', 'w', encoding='utf-8')
                 f.write(segment[0])
                 f.close()
                 index += 1
